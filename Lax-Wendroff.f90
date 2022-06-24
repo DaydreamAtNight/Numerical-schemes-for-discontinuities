@@ -2,7 +2,7 @@ program test
 
 implicit none
 
-integer, parameter :: nx =120
+integer, parameter :: nx =6000
 real(4), dimension(nx) :: ux,gx,fx,x,ux1,ux2,hx,fx1
 real(4), dimension(nx) :: uxN,gxN,fxN
 integer :: i,it,itest
@@ -13,7 +13,7 @@ pi=acos(-1.)
 xlx=8.
 dx=xlx/nx
 a=1. !wave speed
-c=0.75 !courant number
+c=0.01 !courant number
 dt=dx*c/a
 
 do i=1,nx
@@ -30,7 +30,7 @@ print *,'iteration number',it,t,dt
 
 do i=2,nx-1
    fx(i)=(ux(i+1)-ux(i-1))/(2.*dx) !LAX-WEN Term 1
-   hx(i)=(ux(i+1)-2*ux(i)+ux(i-1))/(dx*dx) !LAX-WEN Term 2  
+   hx(i)=10*(ux(i+1)-2*ux(i)+ux(i-1))/(dx*dx) !LAX-WEN Term 2  
 enddo
 fx(1)=fx(2)
 fx(nx)=fx(nx-1)
@@ -50,12 +50,12 @@ if (x(i)>=0.) ux2(i)=0.4
 !if (x(i)==0.) ux2(i)=0.
 enddo
 
-open(10,file='slide64.dat', form='formatted')
+open(10,file='Lax-Wendroff_6000_3_10.dat', form='formatted')
 do i=1,nx
 write(10,*) x(i)+t,ux(i),ux2(i),uxN(i)
 enddo
 close(10)
 
-call system('gnuplot lecture3_slide64.gnu')
+call system('gnuplot Lax-Wendroff_coefficient.gnu')
 
 end program test
